@@ -38,12 +38,12 @@ module OmniAuth
       end
 
       def raw_info
-        url = 'http://api.tumblr.com/v2/user/info'
+        url = 'https://api.tumblr.com/v2/user/info'
         @raw_info ||= MultiJson.decode(access_token.get(url).body)['response']['user']
       end
 
       def avatar_url
-        url = "http://api.tumblr.com/v2/blog/#{ raw_info['blogs'].first['url'].sub(%r|^https?://|, '').sub(%r|/?$|, '') }/avatar"
+        url = "https://api.tumblr.com/v2/blog/#{ raw_info['blogs'].first['url'].sub(%r|^https?://|, '').sub(%r|/?$|, '') }/avatar"
         res = access_token.get(url).body
         @avatar_url ||= MultiJson.decode(res)['response']['avatar_url']
       end
