@@ -20,12 +20,11 @@ module OmniAuth
           :blogs => raw_info['blogs'].map do |b|
             { :name => b['name'], :url => b['url'], :title => b['title'] }
           end,
-          :avatar => avatar_url
         }
       end
 
       extra do
-        { :raw_info => raw_info.merge({ :avatar => avatar_url }) }
+        { :raw_info => raw_info }
       end
 
       def user
@@ -40,12 +39,6 @@ module OmniAuth
       def raw_info
         url = 'https://api.tumblr.com/v2/user/info'
         @raw_info ||= MultiJson.decode(access_token.get(url).body)['response']['user']
-      end
-
-      def avatar_url
-        url = "https://api.tumblr.com/v2/blog/#{ raw_info['blogs'].first['url'].sub(%r|^https?://|, '').sub(%r|/?$|, '') }/avatar"
-        res = access_token.get(url).body
-        @avatar_url ||= MultiJson.decode(res)['response']['avatar_url']
       end
     end
   end
